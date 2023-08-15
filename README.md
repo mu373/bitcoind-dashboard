@@ -2,7 +2,7 @@
 
 Simple dashboard for bitcoind. Designed to work with bitcoind running in another Docker container: [mu373/docker-bitcoind](https://github.com/mu373/docker-bitcoind).
 
-![bitcoind-dashboard](https://github.com/mu373/bitcoind-dashboard/assets/2176670/3f98513c-ec06-4492-bd86-52736446de21)
+![bitcoind-dashboard](https://github.com/mu373/bitcoind-dashboard/assets/2176670/f77aa6f5-e8c7-461d-b64d-1ada61b87f63)
 
 ## Setup
 ```sh
