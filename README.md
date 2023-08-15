@@ -1,5 +1,7 @@
 # bitcoind-dashboard
 
+![bitcoind-dashboard](https://github.com/mu373/bitcoind-dashboard/assets/2176670/3f98513c-ec06-4492-bd86-52736446de21)
+
 ## Getting Started
 
 ```sh
