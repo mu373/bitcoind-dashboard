@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  bitcoind_dashboard_dev:
+    container_name: bitcoind_dashboard_dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: bitcoind_dashboard_dev
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/app/
+
+networks:
+  default:
+    name: bitcoin-nw
+    external: true

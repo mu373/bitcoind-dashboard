@@ -35,3 +35,6 @@ yarn-error.log*
 next-env.d.ts
 
 .env.local
+
+docker-compose.yml
+docker-compose-dev.yml
