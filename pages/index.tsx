@@ -194,8 +194,8 @@ const BlockInfo: React.FC<any> = ({
                   <dd>{blocks.toLocaleString()}</dd>
                   <dt>Latest block</dt>
                   <dd>{currentBlock.toLocaleString()}</dd>
-                  <dt>Verification progress</dt>
-                  <dd>{(verificationProgress * 100).toFixed(2)} %</dd>
+                  <dt>Verified</dt>
+                  <dd>{decimalFloor(verificationProgress * 100, 10)} %</dd>
                   <dt>Size on disk</dt>
                   <dd>{chainSize.toFixed(1)} GB</dd>
                   <dt>Blockchain size</dt>
