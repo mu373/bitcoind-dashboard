@@ -76,6 +76,10 @@ function capitalizeFirstLetter(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1)
 }
 
+function decimalFloor(value: number, base: number) {
+    return Math.floor(value * base) / base;
+}
+
 async function getCurrentBlock() {
   const url = 'https://blockchain.info/latestblock';
   const response = await axios.get(url);
@@ -179,7 +183,7 @@ const BlockInfo: React.FC<any> = ({
               
                 <div className="mb-s">
                   <p>Synchronized (based on block count)</p>
-                  <p className="sync-progress"><span className="sync-progress-num">{(syncPercentage * 100).toFixed(1)}</span>%</p>
+                  <p className="sync-progress"><span className="sync-progress-num">{decimalFloor(syncPercentage * 100, 10)}</span>%</p>
                   <div id="progressbarContainer"></div>
                 </div>
 
