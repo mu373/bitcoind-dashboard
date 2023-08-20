@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import React, {useEffect} from 'react';
-import axios from 'axios';
 const ProgressBar = require('progressbar.js')
 
 interface BitcoindConfig {
@@ -18,17 +17,27 @@ const cfg: BitcoindConfig = {
 };
 
 async function getAPI(cfg: BitcoindConfig, method: string) {
-  const url = `http://${cfg.user}:${cfg.password}@${cfg.host}:${cfg.port}/`;
+  const url = `http://${cfg.host}:${cfg.port}/`;
+  const credentials = btoa(`${cfg.user}:${cfg.password}`);
 
-  const response = await axios.post(url, {
-    jsonrpc: '1.0',
-    id: 'test',
-    method,
-    params: [],
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Basic ${credentials}`,
+    },
+    body: JSON.stringify({
+      jsonrpc: '1.0',
+      id: 'test',
+      method,
+      params: [],
+    }),
   });
 
-  return response.data;
+  const data = await response.json();
+  return data;
 }
+
 
 async function getBlockInfo() {
     const json = await getAPI(cfg, 'getblockchaininfo');
@@ -82,15 +91,17 @@ function decimalFloor(value: number, base: number) {
 
 async function getCurrentBlock() {
   const url = 'https://blockchain.info/latestblock';
-  const response = await axios.get(url);
-  return ( response.data.height );
+  const response = await fetch(url);
+  const data = await response.json();
+  return ( data.height );
 }
 
 //
 async function getCurrentChainSize() {
   const url = 'https://api.blockchain.info/charts/blocks-size?timespan=1days'
-  const response = await axios.get(url);
-  const data = response.data.values[0];
+  const response = await fetch(url);
+  const dataJson = await response.json();
+  const data = dataJson.values[0];
   const date = data.x
   const size = data.y
   return ( {date: date, chainSize: size } )
