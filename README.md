@@ -15,6 +15,8 @@ cp docker-compose-dev-template.yml docker-compose-dev.yml #For development
 cp docker-compose-template.yml docker-compose.yml # For production 
 ```
 
+If you want to easily enable HTTPS access for production using [traefik](https://github.com/mu373/traefik), you can use [this docker-compose template](https://github.com/mu373/bitcoind-dashboard/blob/main/docker-compose-traefik-template.yml).
+
 ## Getting Started
 ```sh
 docker compose -f docker-compose-dev.yml up -d # For development
