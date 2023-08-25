@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  bitcoind_dashboard:
+    container_name: bitcoind_dashboard
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: bitcoind_dashboard
+    restart: always
+    networks:
+      - default
+      - traefik-nw
+    expose:
+      - 3000
+    labels:
+      traefik.enable: true
+      traefik.docker.network: traefik-nw
+      traefik.http.routers.bitcoind-dashboard.rule: Host(`bitcoind-dashboard.example.com`)
+      traefik.http.routers.bitcoind-dashboard.service: bitcoind-dashboard
+      traefik.http.routers.bitcoind-dashboard.entrypoints: websecure
+      traefik.http.routers.bitcoind-dashboard.tls.certresolver: cloudflare
+      traefik.http.services.bitcoind-dashboard.loadbalancer.server.port: 3000
+
+
+networks:
+  default:
+    name: bitcoin-nw
+    external: true
+  traefik-nw:
+    external: true
