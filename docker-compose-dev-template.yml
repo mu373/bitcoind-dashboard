@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    image: bitcoind_dashboard_dev
+    image: mu373/bitcoind-dashboard:dev
     ports:
       - 3000:3000
     volumes:

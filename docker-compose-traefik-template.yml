@@ -6,7 +6,7 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile
-    image: bitcoind_dashboard
+    image: mu373/bitcoind-dashboard
     restart: always
     networks:
       - default
