@@ -38,6 +38,30 @@ async function getAPI(cfg: BitcoindConfig, method: string) {
   return data;
 }
 
+const net = require('net')
+const ElectrumClient = require("@lily-technologies/electrum-client");
+const ELECTRUM_HOST = process.env.ELECTRUM_HOST || "electrs";
+const ELECTRUM_PORT = process.env.ELECTRUM_PORT || 50001;
+const electrumConfig = {
+    client: "dashboard",
+    version: "1.4",
+}
+
+async function getElectrumVersion() {
+    let electrumClient = new ElectrumClient(ELECTRUM_PORT, ELECTRUM_HOST, "tcp");
+    const initClient = await electrumClient.initElectrum(electrumConfig);
+    const version = initClient.versionInfo[0]
+    return version;
+}
+
+async function getElectrumBlockHeight() {
+    const electrumClient = new ElectrumClient(ELECTRUM_PORT, ELECTRUM_HOST, "tcp");
+    const initClient = await electrumClient.initElectrum(electrumConfig);
+    const headers = await initClient.blockchainHeaders_subscribe();
+    const height = headers.height
+    console.log(height)
+    return height;
+}
 
 async function getBlockInfo() {
     const json = await getAPI(cfg, 'getblockchaininfo');
@@ -114,6 +138,8 @@ export async function getServerSideProps() {
     const currentChainSize = await getCurrentChainSize()
     const networkInfo = await getNetworkInfo()
     const mempoolInfo = await getMempoolInfo()
+    const electrumVersion = await getElectrumVersion()
+    const electrumBlockHeight = await getElectrumBlockHeight();
     return {
       props: {
         currentBlock: currentBlock,
@@ -140,7 +166,10 @@ export async function getServerSideProps() {
         connectionInCount: networkInfo.connections_in,
         connectionOutCount: networkInfo.connections_out,
 
-        },
+        electrumVersion: electrumVersion,
+        electrumBlockHeight: electrumBlockHeight
+
+    },
     };
 }
 
@@ -164,6 +193,8 @@ const BlockInfo: React.FC<any> = ({
     connectionTotalCount,
     connectionInCount,
     connectionOutCount,
+    electrumVersion,
+    electrumBlockHeight,
 }) => {
     
   useEffect(() => {
@@ -242,6 +273,21 @@ const BlockInfo: React.FC<any> = ({
                   <dd>{subversion.replace(/\//g, "")}</dd>
                   <dt>Connections</dt>
                   <dd>{connectionTotalCount} ({connectionInCount}-in {connectionOutCount}-out)</dd>
+                </dl>
+            </div>
+
+            <div className="panel">
+              <h2 className="panel-title">Electrum Server</h2>
+              
+                <dl>
+                  <dt>Host</dt>
+                  <dd>{ELECTRUM_HOST}:{ELECTRUM_PORT}</dd>
+                  <dt>Version</dt>
+                  <dd>{electrumVersion}</dd>
+                  <dt>Block height</dt>
+                  <dd>{electrumBlockHeight.toLocaleString()}</dd>
+                  <dt>Indexed</dt>
+                  <dd>{decimalFloor(electrumBlockHeight / blocks * 100, 10)} %</dd>
                 </dl>
             </div>
 
