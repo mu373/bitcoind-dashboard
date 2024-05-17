@@ -34,7 +34,6 @@ async function getAPI(cfg: BitcoindConfig, method: string) {
   return data;
 }
 
-const net = require('net')
 const ElectrumClient = require("@lily-technologies/electrum-client");
 const ELECTRUM_HOST = process.env.ELECTRUM_HOST || "electrs";
 const ELECTRUM_PORT = process.env.ELECTRUM_PORT || 50001;
