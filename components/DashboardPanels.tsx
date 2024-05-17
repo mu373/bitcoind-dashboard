@@ -3,7 +3,11 @@ import React from 'react';
 import { capitalizeFirstLetter, decimalFloor } from '../lib/utils';
 
 const formatValue = (value) => {
-    return value !== undefined ? value : '-';
+  if (value === undefined || value === null) {
+    return '-'
+  } else {
+    return value
+  }
 };
 
 export const BlockchainPanel: React.FC<{ data: any }> = ({ data }) => {
@@ -31,7 +35,7 @@ export const BlockchainPanel: React.FC<{ data: any }> = ({ data }) => {
             {formatValue(data.verificationProgress && decimalFloor(data.verificationProgress * 100, 10))} %
           </dd>
           <dt>Size on disk</dt>
-          <dd>{formatValue(data.chainSize && (data.chainSize / (1024 ** 3)).toFixed(1))} GB</dd>
+          <dd>{formatValue(data.chainSize && data.chainSize.toFixed(1))} GB</dd>
           <dt>Blockchain size</dt>
           <dd>{formatValue(data.currentChainSize && data.currentChainSize.toFixed(1))} GB</dd>
           <dt>Difficulty</dt>
@@ -88,7 +92,7 @@ return (
         <dd>{formatValue(data.electrumBlockHeight && data.electrumBlockHeight.toLocaleString())}</dd>
         <dt>Indexed</dt>
         <dd>
-        {formatValue(data.electrumBlockHeight && data.blockInfo?.blocks && decimalFloor(data.electrumBlockHeight / data.blockInfo.blocks * 100, 10))} %
+        {formatValue(data.electrumBlockHeight && data.blocks && decimalFloor(data.electrumBlockHeight / data.blocks * 100, 10))} %
         </dd>
     </dl>
     </div>
