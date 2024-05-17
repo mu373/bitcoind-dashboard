@@ -39,8 +39,8 @@ export async function getServerSideProps() {
     connectionInCount: 0,
     connectionOutCount: 0,
     enableElectrumPanel: process.env.ENABLE_ELECTRUM_PANEL === 'TRUE',
-    electrumHost: process.env.ELECTRUM_HOST,
-    electrumPort: process.env.ELECTRUM_PORT,
+    electrumHost: '',
+    electrumPort: 0,
     electrumVersion: null,
     electrumBlockHeight: null,
   };
@@ -99,19 +99,26 @@ export async function getServerSideProps() {
     console.error('Error fetching mempool info:', error);
   }
 
-  try {
-    const electrumVersion = await getElectrumVersion();
-    props.electrumVersion = electrumVersion;
-  } catch (error) {
-    console.error('Error fetching Electrum version:', error);
+  if (props.enableElectrumPanel) {
+
+    props.electrumHost = String(process.env.ELECTRUM_HOST);
+    props.electrumPort = Number(process.env.ELECTRUM_PORT);
+
+    try {
+      const electrumVersion = await getElectrumVersion();
+      props.electrumVersion = electrumVersion;
+    } catch (error) {
+      console.error('Error fetching Electrum version:', error);
+    }
+
+    try {
+      const electrumBlockHeight = await getElectrumBlockHeight();
+      props.electrumBlockHeight = electrumBlockHeight;
+    } catch (error) {
+      console.error('Error fetching Electrum block height:', error);
+    }
   }
 
-  try {
-    const electrumBlockHeight = await getElectrumBlockHeight();
-    props.electrumBlockHeight = electrumBlockHeight;
-  } catch (error) {
-    console.error('Error fetching Electrum block height:', error);
-  }
 
   return { props };
 }
@@ -155,7 +162,7 @@ const BlockInfo: React.FC<any> = (props) => {
 
           <NodePanel data={props}></NodePanel>
 
-          <ElectrumPanel data={props}></ElectrumPanel>
+          { enableElectrumPanel && <ElectrumPanel data={props}></ElectrumPanel> }
 
         </div>
       </div>
