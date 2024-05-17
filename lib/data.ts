@@ -42,9 +42,16 @@ const electrumConfig = {
   version: "1.4",
 }
 
+const electrumPersistencePolicy = {
+  retryPeriod: 10000,
+  maxRetry: 3,
+  pingPeriod: 120000,
+  callback: null
+}
+
 export async function getElectrumVersion() {
   let electrumClient = new ElectrumClient(ELECTRUM_PORT, ELECTRUM_HOST, "tcp");
-  const initClient = await electrumClient.initElectrum(electrumConfig);
+  const initClient = await electrumClient.initElectrum(electrumConfig, electrumPersistencePolicy);
   const version = initClient.versionInfo[0]
   return version;
 }
