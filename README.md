@@ -10,8 +10,6 @@ Simple dashboard for bitcoind. Designed to work with bitcoind running in another
 cp .env.local.sample .env.local
 vim .env.local
 
-mkdir public
-
 # Setup docker-compose
 cp docker-compose-dev-template.yml docker-compose-dev.yml #For development
 cp docker-compose-template.yml docker-compose.yml # For production 
