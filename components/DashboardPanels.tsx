@@ -41,7 +41,7 @@ export const BlockchainPanel: React.FC<{ data: any }> = ({ data }) => {
           <dt>Difficulty</dt>
           <dd>{formatValue(data.difficulty && (data.difficulty / 10 ** 12).toFixed(2))} T</dd>
           <dt>Pruned</dt>
-          <dd>{formatValue(data.pruned !== undefined && capitalizeFirstLetter(data.pruned.toString()))}</dd>
+          <dd>{formatValue(data.pruned !== null && capitalizeFirstLetter(data.pruned.toString()))}</dd>
         </dl>
       </div>
     );
