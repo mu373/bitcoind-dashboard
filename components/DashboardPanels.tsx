@@ -53,11 +53,11 @@ return (
     <h2 className="panel-title">Mempool</h2>
     <dl>
         <dt>Transactions</dt>
-        <dd>{data.mempoolTransactions.toLocaleString()}</dd>
+        <dd>{formatValue(data.mempoolTransactions && data.mempoolTransactions.toLocaleString())}</dd>
         <dt>Size</dt>
-        <dd>{(data.mempoolUsage).toLocaleString()}</dd>
+        <dd>{formatValue(data.mempoolUsage && data.mempoolUsage.toLocaleString())}</dd>
         <dt>Total Fee</dt>
-        <dd>{data.totalFee}</dd>
+        <dd>{formatValue(data.totalFee)}</dd>
     </dl>
     </div>
 )
