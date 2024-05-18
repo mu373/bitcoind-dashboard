@@ -49,6 +49,14 @@ const electrumPersistencePolicy = {
   callback: null
 }
 
+export async function getBitcoindHostInfo() {
+  return { host: process.env.BITCOIND_HOST, port: process.env.BITCOIND_PORT }
+}
+
+export async function getElectrumHostInfo() {
+  return { host: process.env.ELECTRUM_HOST, port: process.env.ELECTRUM_PORT }
+}
+
 export async function getElectrumVersion() {
   try {
     let electrumClient = new ElectrumClient(ELECTRUM_PORT, ELECTRUM_HOST, "tcp");
