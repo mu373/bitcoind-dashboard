@@ -194,24 +194,42 @@ export async function getCurrentBlock() {
 
 
 export async function getCurrentChainSize() {
+
   try {
     const url = 'https://api.blockchain.info/charts/blocks-size?timespan=3days'
-    const response = await fetch(url);
-    const dataJson = await response.json();
-    const data = dataJson.values.slice(-1)[0];
-    const date = data.x
-    const size = data.y
-    return (
-      {
-        date: date,
-        chainSize: size
-      }
-    )
+    const response = await fetchWithTimeout(url);
+
+    if (response.ok) {
+      const dataJson = await response.json();
+      const data = dataJson.values.slice(-1)[0];
+      const date = data.x
+      const size = data.y
+      return (
+        {
+          date: date,
+          chainSize: size
+        }
+      )
+    } else {
+      console.error(`Error: ${response.status} - ${response.statusText}`);
+    }
   } catch (error) {
     console.error("Error loading data from blockchain.info API", error);
-    return {
-      date: null,
-      chainSize: null
+    try {
+      const fallbackUrl = 'https://api.blockchair.com/bitcoin/stats';
+      const fallbackResponse: Response = await fetchWithTimeout(fallbackUrl);
+      const fallbackData = await fallbackResponse.json();
+      const size = parseInt(fallbackData.data.blockchain_size, 10);
+      console.log("Loaded current blockchain size from blockchair.com API (fallback)");
+      return (
+        {
+          date: null,
+          chainSize: size / (1000**2)
+        }
+      )
+    } catch (fallbackError) {
+      console.error("Error loading data from blockchair.info API", fallbackError);
+      return null;
     }
   }
 }
