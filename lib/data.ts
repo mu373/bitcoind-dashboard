@@ -177,10 +177,10 @@ export async function getCurrentBlock() {
 
 export async function getCurrentChainSize() {
   try {
-    const url = 'https://api.blockchain.info/charts/blocks-size?timespan=1days'
+    const url = 'https://api.blockchain.info/charts/blocks-size?timespan=3days'
     const response = await fetch(url);
     const dataJson = await response.json();
-    const data = dataJson.values[0];
+    const data = dataJson.values.slice(-1)[0];
     const date = data.x
     const size = data.y
     return (
