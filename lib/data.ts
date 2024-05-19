@@ -183,7 +183,7 @@ export async function getCurrentBlock() {
       const fallbackUrl = 'https://blockstream.info/api/blocks/tip/height';
       const fallbackResponse: Response = await fetchWithTimeout(fallbackUrl);
       const fallbackData = await fallbackResponse.text();
-      console.log("Loaded current block height from blockchain.info API (fallback)");
+      console.log("Loaded current block height from blockstream.info API (fallback)");
       return parseInt(fallbackData, 10);
     } catch (fallbackError) {
       console.error("Error loading data from blockstream.info API", fallbackError);
