@@ -8,12 +8,12 @@ export const decimalFloor = (value: number, base: number) => {
 
 export const fetchWithTimeout = async (url: string, timeout: number = 3000, options?: RequestInit): Promise<Response> => {
   try {
-    const response: Response = await Promise.race([
+    const response = await Promise.race([
       fetch(url, options),
       new Promise((_, reject) =>
         setTimeout(() => reject(new Error('Request timeout')), timeout)
       ),
-    ]);
+    ]) as Response; ;
 
     if (response.ok) {
       return response;
