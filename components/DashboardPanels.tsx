@@ -71,7 +71,7 @@ return (
         <dt>Host</dt>
         <dd>{formatValue(data.bitcoindHost)}:{formatValue(data.bitcoindPort)}</dd>
         <dt>Version</dt>
-        <dd>{formatValue(data.subversion.replace(/\//g, ""))}</dd>
+        <dd>{formatValue(data.subversion && data.subversion.replace(/\//g, ""))}</dd>
         <dt>Connections</dt>
         <dd>{formatValue(data.connectionTotalCount)} ({formatValue(data.connectionInCount)}-in {formatValue(data.connectionOutCount)}-out)</dd>
     </dl>
