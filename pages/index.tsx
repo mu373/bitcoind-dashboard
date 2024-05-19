@@ -116,7 +116,7 @@ const BlockInfo: React.FC<{ defaultDashboardConfig: any }> = ({ defaultDashboard
         const currentChainSizeData = await response.json();
         setDashboardData(prevData => ({
           ...prevData,
-          currentChainSize: currentChainSizeData.chainSize / 1024,
+          currentChainSize: currentChainSizeData.chainSize / 1000,
         }));
       } catch (error) {
         console.error('Error fetching current chain size:', error);
