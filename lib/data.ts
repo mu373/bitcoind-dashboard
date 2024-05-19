@@ -1,3 +1,5 @@
+import { fetchWithTimeout } from "./utils";
+
 interface BitcoindConfig {
   user: any;
   password: any;
@@ -164,16 +166,32 @@ export async function getMempoolInfo() {
 }
 
 export async function getCurrentBlock() {
+
   try {
     const url = 'https://blockchain.info/latestblock';
-    const response = await fetch(url);
-    const data = await response.json();
-    return ( data.height );
+    const response = await fetchWithTimeout(url);
+
+    if (response.ok) {
+      const data = await response.json();
+      return data.height;
+    } else {
+      console.error(`Error: ${response.status} - ${response.statusText}`);
+    }
   } catch (error) {
     console.error("Error loading data from blockchain.info API", error);
-    return null
+    try {
+      const fallbackUrl = 'https://blockstream.info/api/blocks/tip/height';
+      const fallbackResponse: Response = await fetchWithTimeout(fallbackUrl);
+      const fallbackData = await fallbackResponse.text();
+      console.log("Loaded current block height from blockchain.info API (fallback)");
+      return parseInt(fallbackData, 10);
+    } catch (fallbackError) {
+      console.error("Error loading data from blockstream.info API", fallbackError);
+      return null;
+    }
   }
 }
+
 
 export async function getCurrentChainSize() {
   try {
