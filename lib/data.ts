@@ -60,20 +60,28 @@ export async function getElectrumHostInfo() {
 }
 
 export async function getElectrumVersion() {
+  let electrumClient: any | null = null;
   try {
-    let electrumClient = new ElectrumClient(ELECTRUM_PORT, ELECTRUM_HOST, "tcp");
+    electrumClient = new ElectrumClient(ELECTRUM_PORT, ELECTRUM_HOST, "tcp");
     const initClient = await electrumClient.initElectrum(electrumConfig, electrumPersistencePolicy);
     const version = initClient.versionInfo[0]
     return version;
   } catch (error) {
     console.error("Error loading data from Electrum server:", error);
     return null;
+  } finally {
+    try {
+      electrumClient?.close();
+    } catch (error) {
+      console.error("Failed closing Electrum server connection:", error);
+    }
   }
 }
 
 export async function getElectrumBlockHeight() {
+  let electrumClient: any | null = null;
   try {
-    const electrumClient = new ElectrumClient(ELECTRUM_PORT, ELECTRUM_HOST, "tcp");
+    electrumClient = new ElectrumClient(ELECTRUM_PORT, ELECTRUM_HOST, "tcp");
     const initClient = await electrumClient.initElectrum(electrumConfig);
     const headers = await initClient.blockchainHeaders_subscribe();
     const height = headers.height
@@ -81,6 +89,12 @@ export async function getElectrumBlockHeight() {
   } catch (error) {
     console.error("Error loading data from Electrum server:", error);
     return null;
+  } finally {
+    try {
+      electrumClient?.close();
+    } catch (error) {
+      console.error("Failed closing Electrum server connection:", error);
+    }
   }
 }
 
