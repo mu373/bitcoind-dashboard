@@ -534,6 +534,7 @@ footer {
   dl {
     display: flex;
     flex-wrap: wrap;
+    overflow-wrap: break-word;
     dt {
       width: 50%;
       font-weight: normal;
